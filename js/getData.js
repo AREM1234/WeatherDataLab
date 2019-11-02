@@ -89,7 +89,12 @@ window.onload = initAll();
 	}
 
 	function checkArray(array, value){
-		document.getElementById("searchButton").color = "green";
+		for(var i = 0; i < array.length; i++){
+			if(array[i] == '"' + value + '"'){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	function SearchData(){
