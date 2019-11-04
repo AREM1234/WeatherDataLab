@@ -33,11 +33,8 @@
 
 
 				<div class="col s2">
-					<button id="search">Search</button>
-				</div>
-
-				<div class="col s2">
-					<button id="clear">Clear Sorting</button>
+					<a class="waves-effect waves-light btn" id="search">Search</a>
+					<a class="waves-effect waves-light btn red" id="clear">Clear Sorting</a>
 				</div>
 
 			</form>

@@ -223,6 +223,32 @@ function CheckDateLocation($locationID, $date){
 
 }
 
+function DeleteWeatherConditions($weatherID){
+
+	global $db;
+
+	$query = $db->prepare("DELETE FROM weathersconditions
+							WHERE Weather = :weatherID ");
+
+	$query->bindParam(":weatherID", $weatherID);
+
+	$query->execute();
+
+}
+
+function DeleteWeather($weatherID){
+
+	global $db;
+
+	$query = $db->prepare("DELETE FROM weather
+							WHERE WeatherID = :weatherID ");
+
+	$query->bindParam(":weatherID", $weatherID);
+
+	$query->execute();
+
+}
+
 
 
 

@@ -11,12 +11,16 @@
 			<div class="nav-wrapper">
 				<?php if(isset($_SESSION["Admin"])): ?>
 					<ul class="left hide-on-med-and-down">
+						<li ><a href="index.php" class="black-text">Home</a></li>
 						<li ><a href="addWeather.php" class="black-text">Add Weather</a></li>
 					</ul>
 					<ul class="right hide-on-med-and-down">
 						<li ><a href="logout.php" class="black-text">Logout</a></li>
 					</ul>
 				<?php else: ?>
+					<ul class="left hide-on-med-and-down">
+						<li ><a href="index.php" class="black-text">Home</a></li>
+					</ul>
 					<ul class="right hide-on-med-and-down">
 						<li ><a href="login.php" class="black-text">Admin Login</a></li>
 					</ul>

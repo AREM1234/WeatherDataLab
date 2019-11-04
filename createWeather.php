@@ -1,5 +1,9 @@
 <?php 
 	session_start();
+	if(!isset($_SESSION["Admin"])){
+		header("Location: index.php");
+		die;
+	}
 	require_once("Models/DBConnect.php");
 	require_once("Models/DBFunctions.php");
 
@@ -14,72 +18,75 @@
 	$Precipitation = trim(filter_input(INPUT_POST, "Precipitation", FILTER_SANITIZE_STRING));
 	$weathersConditions = $_POST['weathersConditions'];
 
-	if(empty($City) || empty($State) || empty($Date) || empty($MaxTemp) || empty($MinTemp) || empty($AverageTemp) || empty($AverageWindSpeed)  || empty($WindDirection) || empty($Precipitation)){
+	if(empty($City) || empty($State) || empty($Date) || (empty($MaxTemp) &&  $MaxTemp != 0) || (empty($MinTemp) &&  $AverageTemp != 0) || (empty($AverageTemp) &&  $AverageTemp != 0) || (empty($AverageWindSpeed) &&  $AverageWindSpeed != 0 )  || empty($WindDirection) || (empty($Precipitation) &&  $Precipitation != 0) ){
 		header("Location: index.php");
 		die;
 	}
 
+	if($MaxTemp < $MinTemp || $AverageTemp > $MaxTemp || $AverageTemp < $MinTemp){
+		header("Location: addWeather.php?error=Invalid temperatures.");
+		die;
+	}
 
+	$cityID = GetCityID($City)[0];
 
-	$cityID = GetCityID($City);
-
-	if(empty($cityID[0])){
+	if(empty($cityID)){
 		$cityID = CreateCity($City);
 	}
 
-	$stateID = GetStateID($State);
+	$stateID = GetStateID($State)[0];
 
-	if(empty($stateID[0])){
+	if(empty($stateID)){
 		$stateID = CreateState($State);
 	}
 
-	$locationID = GetLocationID($cityID[0], $stateID[0]);
+	$locationID = GetLocationID($cityID, $stateID)[0];
 
-	if(empty($locationID[0])){
-		$locationID = CreateLocation($cityID[0], $stateID[0]);
+	if(empty($locationID)){
+		$locationID = CreateLocation($cityID, $stateID);
 	}
 
-	if(!CheckDateLocation($locationID[0], $Date)){
+	if(!CheckDateLocation($locationID, $Date)){
 		header("Location: addWeather.php?error=Invalid Date and Location combo");
 		die;
 	}
 
-	$MaxTempRef = GetNumberByID($MaxTemp);
+	$MaxTempRef = GetNumberByID($MaxTemp)[0];
 
-	if(empty($MaxTempRef[0])){
+	if(empty($MaxTempRef)){
 		CreateNumber($MaxTemp);
 		$MaxTempRef = $MaxTemp;
 	}
+	
+	$MinTempRef = GetNumberByID($MinTemp)[0];
 
-	$MinTempRef = GetNumberByID($MinTemp);
-
-	if(empty($MinTempRef[0])){
+	if(empty($MinTempRef)){
 		CreateNumber($MinTemp);
 		$MinTempRef = $MinTemp;
 	}
 
-	$AverageWindSpeedRef = GetNumberByID($AverageWindSpeed);
+	$AverageWindSpeedRef = GetNumberByID($AverageWindSpeed)[0];
 
-	if(empty($AverageWindSpeedRef[0])){
+	if(empty($AverageWindSpeedRef)){
 		CreateNumber($AverageWindSpeed);
 		$AverageWindSpeedRef = $AverageWindSpeed;
 	}
 
-	$AverageTempRef = GetNumberByID($AverageTemp);
+	$AverageTempRef = GetNumberByID($AverageTemp)[0];
 
-	if(empty($AverageTempRef[0])){
+	if(empty($AverageTempRef)){
 		CreateNumber($AverageTemp);
 		$AverageTempRef = $AverageTemp;
 	}
 
-	$PrecipitationRef = GetNumberByID($Precipitation);
+	$PrecipitationRef = GetNumberByID($Precipitation)[0];
 
-	if(empty($PrecipitationRef[0])){
+	if(empty($PrecipitationRef)){
 		CreateNumber($Precipitation);
 		$PrecipitationRef = $Precipitation;
 	}
 
-	$weatherID = CreateWeather($locationID[0], $MinTempRef[0], $MaxTempRef[0], $AverageTempRef[0], $AverageWindSpeedRef[0], $WindDirection, $PrecipitationRef[0], $Date);
+	$weatherID = CreateWeather($locationID, $MinTempRef, $MaxTempRef, $AverageTempRef, $AverageWindSpeedRef, $WindDirection, $PrecipitationRef, $Date);
 
 	foreach ($weathersConditions as $condition ) {
 		CreateWeatherCondition($weatherID, $condition);
@@ -87,6 +94,7 @@
 
 
 	header("Location: index.php");
+	
 	
  ?>
 	

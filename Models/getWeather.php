@@ -145,7 +145,7 @@
 	</td>
 	<?php if(isset($_SESSION["Admin"])): ?>
 		<td>
-			<a href="deleteWeather&weatherID=<?php echo $weather['WeatherID'];?>">Delete</a>
+			<a href="deleteWeather?weatherID=<?php echo $weather['WeatherID'];?>" class="waves-effect waves-light btn red" onclick="return confirm('Are you sure you want to delete this record?.');">Delete</a>
 		</td>
 	<?php endif; ?>
 </tr>

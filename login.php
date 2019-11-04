@@ -24,8 +24,10 @@
 						<label class="black-text">Password</label>
 						<input type="Password" name="Password" required />
 
-						<button><a href="index.php">Back</a></button>
-						<input type="submit" value="Login" />
+						<a href="index.php" class="waves-effect waves-light btn">Back</a>
+						<button class="btn waves-effect waves-light right" type="submit" name="action">Login
+							<i class="material-icons right">send</i>
+						</button>
 
 					</form>					
 				</div>

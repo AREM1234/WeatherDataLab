@@ -1,5 +1,9 @@
 <?php 
 	session_start();
+	if(!isset($_SESSION["Admin"])){
+		header("Location: index.php");
+		die;
+	}
 	include("Views/header.php");
 	include("Models/DBConnect.php");
 	include("Models/DBFunctions.php");
@@ -25,25 +29,25 @@
 					<form action="createWeather.php" method="post">
 
 						<label class="black-text">City</label>
-						<input type="text" name="City" required />
+						<input type="text" name="City" maxlength="60" required />
 
 						<label class="black-text">State</label>
-						<input type="text" name="State" required />
+						<input type="text" name="State" maxlength="2" required />
 
 						<label class="black-text">Date</label>
 						<input type="date" name="Date" required />
 
 						<label class="black-text">Max Temperature</label>
-						<input type="number" name="MaxTemp" required />
+						<input type="number" name="MaxTemp" required step="0.01" />
 
 						<label class="black-text">Min Temperature</label>
-						<input type="number" name="MinTemp" required />
+						<input type="number" name="MinTemp" required step="0.01" />
 
 						<label class="black-text">Average Temperature</label>
-						<input type="number" name="AverageTemp" required />
+						<input type="number" name="AverageTemp" required step="0.01" />
 
 						<label class="black-text">Average Wind Speed</label>
-						<input type="number" name="AverageWindSpeed" required />
+						<input type="number" name="AverageWindSpeed" required step="0.01" />
 
 						<label class="black-text">Wind Direction</label>
 						<select name="WindDirection" class="browser-default">
@@ -53,7 +57,7 @@
 						</select>
 
 						<label class="black-text">Precipitation</label>
-						<input type="number" name="Precipitation" required />
+						<input type="number" name="Precipitation" required step="0.01" />
 
 						<label class="black-text">Conditions</label>
 						<br/>
@@ -67,8 +71,10 @@
 
 
 
-						<button><a href="index.php">Back</a></button>
-						<input type="submit" value="Add Weather" />
+						<a href="index.php" class="waves-effect waves-light btn">Back</a>
+						<button class="btn waves-effect waves-light right" type="submit" name="action">Add Weather
+							<i class="material-icons right">send</i>
+						</button>
 
 					</form>					
 				</div>
